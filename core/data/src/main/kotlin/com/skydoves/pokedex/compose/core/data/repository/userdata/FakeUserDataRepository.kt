@@ -19,13 +19,16 @@ package com.skydoves.pokedex.compose.core.data.repository.userdata
 import com.skydoves.pokedex.compose.core.model.UiTheme
 import com.skydoves.pokedex.compose.core.model.UserData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
 
-class FakeUserDataRepository : UserDataRepository {
-  override val userData: Flow<UserData> = flowOf(
-    UserData(uiTheme = UiTheme.FOLLOW_SYSTEM),
-  )
+class FakeUserDataRepository @Inject constructor() : UserDataRepository {
+  private val _userData = MutableStateFlow(UserData(uiTheme = UiTheme.FOLLOW_SYSTEM))
+
+  override val userData: Flow<UserData> = _userData
 
   override suspend fun setUiTheme(uiTheme: UiTheme) {
+    _userData.value = _userData.value.copy(uiTheme = uiTheme)
   }
 }

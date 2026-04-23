@@ -19,7 +19,7 @@ android {
     applicationId = "com.skydoves.pokedex.compose"
     versionCode = Configuration.versionCode
     versionName = Configuration.versionName
-    testInstrumentationRunner = "com.skydoves.pokedex.compose.AppTestRunner"
+    testInstrumentationRunner = "com.skydoves.pokedex.compose.HiltTestRunner"
   }
 
   signingConfigs {
@@ -132,5 +132,67 @@ dependencies {
   androidTestImplementation(libs.truth)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso)
-//  androidTestImplementation(libs.android.test.runner)
+  androidTestImplementation(libs.kaspresso)
+  androidTestImplementation(libs.kaspresso.compose)
+  androidTestImplementation(libs.kotlinx.coroutines.test)
+  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+  debugImplementation(libs.androidx.compose.ui.test.manifest)
+  androidTestImplementation(libs.kaspresso.allure)
+}
+val allureResultsDir = layout.buildDirectory.dir("allure-results")
+val allureReportDir = layout.buildDirectory.dir("reports/allure-report")
+val allureAssetsDir = layout.projectDirectory.dir("src/main/assets/allure-report")
+
+tasks.register<Exec>("pullAllureResults") {
+  group = "verification"
+  val adbFile = androidComponents.sdkComponents.adb.get().asFile
+  val resultsFile = allureResultsDir.get().asFile
+
+  doFirst {
+    resultsFile.deleteRecursively()
+  }
+  executable = adbFile.absolutePath
+  args(
+    "pull",
+    "/sdcard/Documents/allure-results",
+    resultsFile.absolutePath
+  )
+
+  isIgnoreExitValue = true
+}
+
+tasks.register<Exec>("generateAllureReport") {
+  group = "verification"
+
+  dependsOn("pullAllureResults")
+  val resultsFile = allureResultsDir.get().asFile
+  val reportFile = allureReportDir.get().asFile
+
+  doFirst {
+    reportFile.deleteRecursively()
+  }
+
+  executable = "/opt/homebrew/bin/allure"
+  args(
+    "generate",
+    resultsFile.absolutePath,
+    "-o",
+    reportFile.absolutePath,
+    "--clean"
+  )
+}
+
+tasks.register<Copy>("saveAllureReportToResources") {
+  group = "verification"
+
+  dependsOn("generateAllureReport")
+
+  from(allureReportDir)
+  into(allureAssetsDir)
+}
+
+tasks.matching {
+  it.name == "connectedAndroidTest" || it.name == "connectedDebugAndroidTest"
+}.configureEach {
+  finalizedBy("saveAllureReportToResources")
 }

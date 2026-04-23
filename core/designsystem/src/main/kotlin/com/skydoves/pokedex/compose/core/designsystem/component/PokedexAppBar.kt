@@ -30,12 +30,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.skydoves.pokedex.compose.core.designsystem.theme.PokedexTheme
 import com.skydoves.pokedex.compose.designsystem.R
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 
 @Composable
 fun PokedexAppBar(onActionClick: () -> Unit) {
   TopAppBar(
     title = {
       Text(
+        modifier = Modifier.testTag("AppBarTitle"),
         text = stringResource(id = R.string.app_name),
         color = PokedexTheme.colors.absoluteWhite,
         fontSize = 18.sp,
@@ -46,7 +49,9 @@ fun PokedexAppBar(onActionClick: () -> Unit) {
       containerColor = PokedexTheme.colors.primary,
     ),
     actions = {
-      IconButton(onClick = onActionClick) {
+      IconButton(
+        modifier = Modifier.testTag("SettingsButton"),
+        onClick = onActionClick) {
         Icon(
           imageVector = Icons.Default.Settings,
           contentDescription = null,

@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -89,7 +90,9 @@ fun SettingsDialog(
         content = {
 
           PokedexText(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+              .testTag("SettingsTitle")
+              .fillMaxWidth(),
             text = stringResource(R.string.feature_settings_title),
             color = PokedexTheme.colors.black,
             fontWeight = FontWeight.Normal,
@@ -120,7 +123,9 @@ fun SettingsDialog(
               Text(text = stringResource(id = R.string.feature_settings_dismiss_dialog_button_text))
             },
             colors = ButtonDefaults.textButtonColors(contentColor = PokedexTheme.colors.primary),
-            modifier = Modifier.align(alignment = Alignment.End)
+            modifier = Modifier
+              .testTag("OKButton")
+              .align(alignment = Alignment.End)
           )
         }
       )
@@ -167,7 +172,9 @@ private fun SettingsDialogThemeSection(
     content = {
 
       PokedexText(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+          .testTag("ListTitle")
+          .fillMaxWidth(),
         text = stringResource(id = R.string.feature_settings_theme),
         color = PokedexTheme.colors.black,
         fontWeight = FontWeight.Medium,
@@ -190,6 +197,7 @@ private fun SettingsDialogThemeSection(
           UiTheme.entries.forEach {
             Row(
               Modifier
+                .testTag("ThemeRow_${it.name}")
                   .selectable(
                       selected = uiTheme == it,
                       role = Role.RadioButton,

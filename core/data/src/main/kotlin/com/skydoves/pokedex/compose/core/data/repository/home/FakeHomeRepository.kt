@@ -20,8 +20,9 @@ import com.skydoves.pokedex.compose.core.model.Pokemon
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
-class FakeHomeRepository : HomeRepository {
+class FakeHomeRepository @Inject constructor() : HomeRepository {
   override fun fetchPokemonList(
     page: Int,
     onStart: () -> Unit,
