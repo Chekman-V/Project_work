@@ -67,3 +67,9 @@ freeline_project_description.json
 
 # Kotlin
 .kotlin
+
+# Разрешить загрузку отчетов Allure
+!importanture-results/
+!importanture-report/
+!build/allure-results/
+!build/reports/allure-report/
