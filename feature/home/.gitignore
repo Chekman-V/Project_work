@@ -1,7 +1,0 @@
-/build
-
-# Разрешить загрузку отчетов Allure
-!importanture-results/
-!importanture-report/
-!build/allure-results/
-!build/reports/allure-report/
