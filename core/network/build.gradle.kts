@@ -47,4 +47,26 @@ dependencies {
 
   // json parsing
   implementation(libs.kotlinx.serialization.json)
+
+  testImplementation("io.ktor:ktor-client-core:2.3.12")
+  testImplementation("io.ktor:ktor-client-cio:2.3.12")
+  testImplementation("io.ktor:ktor-client-content-negotiation:2.3.12")
+  testImplementation("io.ktor:ktor-serialization-kotlinx-json:2.3.12")
+  testImplementation("io.qameta.allure:allure-junit4:2.27.0")
+}
+tasks.withType<Test>().configureEach {
+  systemProperties(mapOf(
+    "allure.results.directory" to layout.buildDirectory.dir("allure-results").get().asFile.absolutePath
+  ))
+}
+
+tasks.register("allureReport", Exec::class) {
+  group = "allure"
+  description = "Generate Allure report"
+  commandLine = listOf(
+    "allure",
+    "serve",
+    layout.buildDirectory.dir("allure-results").get().asFile.absolutePath
+  )
+  dependsOn("/opt/homebrew/bin/allure")
 }
