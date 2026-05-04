@@ -14,6 +14,7 @@ import androidx.compose.ui.test.hasTestTag
 import org.junit.Before
 import com.skydoves.pokedex.compose.screen.CardScreen
 import com.skydoves.pokedex.compose.screen.SettingsScreen
+import io.github.kakaocup.compose.node.element.KNode
 
 @HiltAndroidTest
 class KaspressoTest : TestCase() {
@@ -240,6 +241,26 @@ class KaspressoTest : TestCase() {
 
       }
 
+    }
+  }
+
+  @OptIn(ExperimentalTestApi::class)
+  @Test
+  fun testFail() = run {
+
+    step("Ждем загрузки главного экрана") {
+      composeTestRule.waitUntilAtLeastOneExists(
+        hasTestTag("AppBarTitle"),
+        timeoutMillis = 15_000L
+      )
+    }
+
+    step("Ищем несуществующий элемент на главном экране") {
+
+      composeTestRule.waitUntilAtLeastOneExists(
+        hasTestTag("Fail"),
+        timeoutMillis = 1_000L
+      )
     }
   }
 
