@@ -32,12 +32,12 @@ class HomeViewModelTest {
   }
 
   @Test
-  fun `initial state is Loading`() = runTest {
+  fun test_loading() = runTest {
     assertEquals(HomeUiState.Loading, viewModel.uiState.value)
   }
 
   @Test
-  fun `fetch pokemon list on init`() = runTest {
+  fun test_return_PokemonList() = runTest {
     val mockPokemonList = listOf(Pokemon(nameField = "bulbasaur", url = "url"))
 
     whenever(homeRepository.fetchPokemonList(any(), any(), any(), any(), any()))
@@ -54,7 +54,7 @@ class HomeViewModelTest {
   }
 
   @Test
-  fun `fetchNextPokemonList increments page when not loading and not last page`() = runTest {
+  fun test_increments_page() = runTest {
     whenever(homeRepository.fetchPokemonList(any(), any(), any(), any(), any())).thenAnswer { invocation ->
       val onComplete = invocation.arguments[2] as () -> Unit
       onComplete()
@@ -78,7 +78,7 @@ class HomeViewModelTest {
   }
 
   @Test
-  fun `fetchNextPokemonList does not increment page if currently loading`() = runTest {
+  fun test_not_increment_page() = runTest {
     whenever(homeRepository.fetchPokemonList(any(), any(), any(), any(), any()))
       .doReturn(flowOf(emptyList()))
 
@@ -93,7 +93,7 @@ class HomeViewModelTest {
   }
 
   @Test
-  fun `fetchNextPokemonList does not increment page if last page is reached`() = runTest {
+  fun test_last_page() = runTest {
     whenever(homeRepository.fetchPokemonList(any(), any(), any(), any(), any())).thenAnswer { invocation ->
       val onComplete = invocation.arguments[2] as () -> Unit
       val onLastPageReached = invocation.arguments[3] as () -> Unit
