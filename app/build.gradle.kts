@@ -19,7 +19,7 @@ android {
     applicationId = "com.skydoves.pokedex.compose"
     versionCode = Configuration.versionCode
     versionName = Configuration.versionName
-    testInstrumentationRunner = "com.skydoves.pokedex.compose.AppTestRunner"
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
   signingConfigs {
@@ -132,5 +132,15 @@ dependencies {
   androidTestImplementation(libs.truth)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso)
-//  androidTestImplementation(libs.android.test.runner)
+  androidTestImplementation(libs.uiautomator)
+}
+
+tasks.register<Exec>("allureReport") {
+  val resultsDir = layout.buildDirectory.dir("outputs/androidTest-results/connected").get().asFile.absolutePath
+  val reportDir = layout.buildDirectory.dir("reports/allure-report").get().asFile.absolutePath
+  commandLine("/opt/homebrew/bin/allure", "generate", resultsDir, "-o", reportDir, "--clean")
+}
+
+tasks.matching { it.name == "connectedAndroidTest" }.configureEach {
+  finalizedBy("allureReport")
 }
