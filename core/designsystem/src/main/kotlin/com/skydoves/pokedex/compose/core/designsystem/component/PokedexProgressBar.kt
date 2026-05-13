@@ -43,6 +43,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -77,7 +81,14 @@ fun PokedexProgressBar(
         color = PokedexTheme.colors.absoluteWhite,
         shape = RoundedCornerShape(64.dp),
       )
-      .clip(RoundedCornerShape(64.dp)),
+      .clip(RoundedCornerShape(64.dp))
+      .semantics {
+        progressBarRangeInfo = ProgressBarRangeInfo(
+          current = progress,
+          range = 0f..1f,
+        )
+        contentDescription = "Progress: ${(progress * 100).toInt()}%"
+      },
   ) {
     var textWidth by remember { mutableIntStateOf(0) }
     val threshold = 16

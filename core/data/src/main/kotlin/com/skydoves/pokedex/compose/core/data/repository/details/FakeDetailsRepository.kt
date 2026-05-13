@@ -20,8 +20,9 @@ import com.skydoves.pokedex.compose.core.model.PokemonInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
-class FakeDetailsRepository : DetailsRepository {
+class FakeDetailsRepository @Inject constructor() : DetailsRepository {
 
   override fun fetchPokemonInfo(
     name: String,
@@ -34,16 +35,19 @@ class FakeDetailsRepository : DetailsRepository {
     name = "bulbasaur",
     height = 7,
     weight = 69,
-    experience = 60,
+    experience = 64,
     types = listOf(
       PokemonInfo.TypeResponse(slot = 0, type = PokemonInfo.Type("grass")),
-      PokemonInfo.TypeResponse(slot = 0, type = PokemonInfo.Type("poison")),
+      PokemonInfo.TypeResponse(slot = 1, type = PokemonInfo.Type("poison")),
     ),
     stats = listOf(
-      PokemonInfo.StatsResponse(baseStat = 20, effort = 0, stat = PokemonInfo.Stat("hp")),
-      PokemonInfo.StatsResponse(baseStat = 40, effort = 0, stat = PokemonInfo.Stat("attack")),
-      PokemonInfo.StatsResponse(baseStat = 60, effort = 0, stat = PokemonInfo.Stat("defense")),
-      PokemonInfo.StatsResponse(baseStat = 80, effort = 0, stat = PokemonInfo.Stat("attack")),
+      PokemonInfo.StatsResponse(baseStat = 45, effort = 0, stat = PokemonInfo.Stat("hp")),
+      PokemonInfo.StatsResponse(baseStat = 49, effort = 0, stat = PokemonInfo.Stat("attack")),
+      PokemonInfo.StatsResponse(baseStat = 49, effort = 0, stat = PokemonInfo.Stat("defense")),
+      PokemonInfo.StatsResponse(baseStat = 45, effort = 0, stat = PokemonInfo.Stat("speed")),
+      PokemonInfo.StatsResponse(baseStat = 65, effort = 1, stat = PokemonInfo.Stat("special-attack")),
+      PokemonInfo.StatsResponse(baseStat = 65, effort = 0, stat = PokemonInfo.Stat("special-defense")),
     ),
+    exp = 500,
   )
 }

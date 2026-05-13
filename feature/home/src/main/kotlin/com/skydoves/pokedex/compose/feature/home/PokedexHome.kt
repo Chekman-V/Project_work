@@ -155,7 +155,7 @@ private fun PokemonCard(
       modifier = Modifier
         .padding(6.dp)
         .fillMaxWidth()
-        .testTag("Pokemon")
+        .testTag("Pokemon_${pokemon.name}")
         .sharedBounds(
           sharedContentState = rememberSharedContentState(key = "pokemon-${pokemon.name}"),
           animatedVisibilityScope = animatedContentScope,

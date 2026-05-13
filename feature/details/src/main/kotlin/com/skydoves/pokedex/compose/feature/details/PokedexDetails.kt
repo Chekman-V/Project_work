@@ -165,7 +165,9 @@ private fun DetailsHeader(
       )
 
       Text(
-        modifier = Modifier.padding(horizontal = 10.dp),
+        modifier = Modifier
+          .testTag("TextNearBack")
+          .padding(horizontal = 10.dp),
         text = pokemon.name,
         color = PokedexTheme.colors.absoluteWhite,
         fontWeight = FontWeight.Bold,
@@ -175,6 +177,7 @@ private fun DetailsHeader(
 
     PokedexText(
       modifier = Modifier
+        .testTag("PokemonNumber")
         .align(Alignment.TopEnd)
         .padding(12.dp)
         .statusBarsPadding(),
@@ -206,6 +209,7 @@ private fun DetailsHeader(
 
   PokedexText(
     modifier = Modifier
+      .testTag("PokemonName")
       .padding(top = 24.dp)
       .fillMaxWidth(),
     text = pokemon.name,
@@ -225,9 +229,10 @@ private fun DetailsInfo(pokemonInfo: PokemonInfo) {
       .padding(top = 14.dp),
     horizontalArrangement = Arrangement.spacedBy(22.dp, Alignment.CenterHorizontally),
   ) {
-    pokemonInfo.types.forEach { typeInfo ->
+    pokemonInfo.types.forEachIndexed { index, typeInfo ->
       Text(
         modifier = Modifier
+          .testTag("PokemonType_$index")
           .background(
             color = getPokemonTypeColor(type = typeInfo.type.name),
             shape = RoundedCornerShape(64.dp),
@@ -250,11 +255,13 @@ private fun DetailsInfo(pokemonInfo: PokemonInfo) {
     horizontalArrangement = Arrangement.SpaceEvenly,
   ) {
     PokemonInfoItem(
+      modifier = Modifier.testTag("PokemonWeight"),
       title = pokemonInfo.getWeightString(),
       content = stringResource(id = R.string.weight),
     )
 
     PokemonInfoItem(
+      modifier = Modifier.testTag("PokemonHeight"),
       title = pokemonInfo.getHeightString(),
       content = stringResource(id = R.string.height),
     )
@@ -277,9 +284,11 @@ private fun DetailsStatus(
   )
 
   Column {
-    pokemonInfo.toPokedexStatusList().forEach { pokemonStatus ->
+    pokemonInfo.toPokedexStatusList().forEachIndexed { index, pokemonStatus ->
       PokemonStatusItem(
-        modifier = Modifier.padding(bottom = 12.dp),
+        modifier = Modifier
+          .testTag("PokemonStatus_$index")
+          .padding(bottom = 12.dp),
         pokedexStatus = pokemonStatus,
       )
     }
